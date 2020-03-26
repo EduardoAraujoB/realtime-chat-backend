@@ -1,0 +1,18 @@
+{
+  "name": "graphql-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "EduardoAraujoB <ea0123450@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/server.ts",
+    "dev": "ts-node-dev --respawn --transpileOnly src/server.ts"
+  },
+  "dependencies": {
+    "prisma-client-lib": "^1.34.10"
+  },
+  "devDependencies": {
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3"
+  }
+}
