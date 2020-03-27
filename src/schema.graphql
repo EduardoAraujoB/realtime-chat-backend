@@ -1,0 +1,6 @@
+type hello {
+  result: String
+}
+type Query {
+  hello: hello
+}
