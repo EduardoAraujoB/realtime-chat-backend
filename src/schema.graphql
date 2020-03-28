@@ -1,9 +1,14 @@
 type User {
   id: ID!
-  email: String!
   name: String!
+  email: String!
+  password: String!
 }
 
 type Query {
-  users: [User]
+  users: [User]!
+}
+
+type Mutation {
+  user(name: String!, email: String!, password: String!): User
 }
