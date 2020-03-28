@@ -1,6 +1,9 @@
-type hello {
-  result: String
+type User {
+  id: ID!
+  email: String!
+  name: String!
 }
+
 type Query {
-  hello: hello
+  users: [User]
 }
