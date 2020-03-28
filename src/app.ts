@@ -2,22 +2,16 @@ import 'graphql-import-node';
 import { ApolloServer } from 'apollo-server';
 
 import schema from './schema.graphql';
-
-const hello = {
-  result: 'hello world',
-};
-
-const resolvers = {
-  Query: {
-    hello: () => hello,
-  },
-};
+import userResolver from './resolvers/user';
 
 class App {
   public apollo: ApolloServer;
 
   public constructor() {
-    this.apollo = new ApolloServer({ typeDefs: schema, resolvers });
+    this.apollo = new ApolloServer({
+      typeDefs: schema,
+      resolvers: userResolver,
+    });
   }
 
   public startServer(): void {
