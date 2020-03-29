@@ -7,6 +7,7 @@ const prisma = new Prisma();
 export default {
   Query: {
     users: () => prisma.users(),
+    user: (_parent: null, { id }) => prisma.user({ id }),
   },
   Mutation: {
     user: async (_parent: null, { name, email, password }) => {
