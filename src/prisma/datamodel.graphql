@@ -3,4 +3,25 @@ type User {
   email: String! @unique
   name: String!
   password: String!
+  chats: [Chat!]!
+  messages: [Message!]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Chat {
+  id: ID! @id
+  owner: User! @relation(link: INLINE)
+  messages: [Message!]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Message {
+  id: ID! @id
+  chat: Chat! @relation(link: INLINE)
+  author: User! @relation(link: INLINE)
+  content: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
