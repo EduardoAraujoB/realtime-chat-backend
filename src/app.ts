@@ -2,7 +2,7 @@ import 'graphql-import-node';
 import { ApolloServer } from 'apollo-server';
 
 import schema from './schema.graphql';
-import userResolver from './resolvers/user';
+import resolvers from './resolvers';
 
 class App {
   public apollo: ApolloServer;
@@ -10,7 +10,7 @@ class App {
   public constructor() {
     this.apollo = new ApolloServer({
       typeDefs: schema,
-      resolvers: userResolver,
+      resolvers,
     });
   }
 

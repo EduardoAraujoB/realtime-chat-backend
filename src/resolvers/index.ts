@@ -2,12 +2,13 @@ import bcrypt from 'bcryptjs';
 
 import { Prisma } from '../prisma/generated/prisma-client';
 
+import UserQuerys from './queries/user';
+
 const prisma = new Prisma();
 
 export default {
   Query: {
-    users: () => prisma.users(),
-    user: (_parent: null, { id }) => prisma.user({ id }),
+    ...UserQuerys,
   },
   Mutation: {
     user: async (_parent: null, { name, email, password }) => {
