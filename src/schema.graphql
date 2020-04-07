@@ -1,8 +1,21 @@
+scalar DateTime
+
 type User {
   id: ID!
   name: String!
   email: String!
   password: String!
+  chats: [Chat!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Chat {
+  id: ID!
+  name: String!
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
@@ -12,4 +25,5 @@ type Query {
 
 type Mutation {
   user(name: String!, email: String!, password: String!): User
+  chat(userId: ID!, name: String!): Chat
 }
