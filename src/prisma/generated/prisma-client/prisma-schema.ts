@@ -20,6 +20,7 @@ type BatchPayload {
 
 type Chat {
   id: ID!
+  name: String!
   owner: User!
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
   createdAt: DateTime!
@@ -34,6 +35,7 @@ type ChatConnection {
 
 input ChatCreateInput {
   id: ID
+  name: String!
   owner: UserCreateOneWithoutChatsInput!
   messages: MessageCreateManyWithoutChatInput
 }
@@ -50,11 +52,13 @@ input ChatCreateOneWithoutMessagesInput {
 
 input ChatCreateWithoutMessagesInput {
   id: ID
+  name: String!
   owner: UserCreateOneWithoutChatsInput!
 }
 
 input ChatCreateWithoutOwnerInput {
   id: ID
+  name: String!
   messages: MessageCreateManyWithoutChatInput
 }
 
@@ -66,6 +70,8 @@ type ChatEdge {
 enum ChatOrderByInput {
   id_ASC
   id_DESC
+  name_ASC
+  name_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -74,6 +80,7 @@ enum ChatOrderByInput {
 
 type ChatPreviousValues {
   id: ID!
+  name: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -93,6 +100,20 @@ input ChatScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -133,8 +154,17 @@ input ChatSubscriptionWhereInput {
 }
 
 input ChatUpdateInput {
+  name: String
   owner: UserUpdateOneRequiredWithoutChatsInput
   messages: MessageUpdateManyWithoutChatInput
+}
+
+input ChatUpdateManyDataInput {
+  name: String
+}
+
+input ChatUpdateManyMutationInput {
+  name: String
 }
 
 input ChatUpdateManyWithoutOwnerInput {
@@ -146,6 +176,12 @@ input ChatUpdateManyWithoutOwnerInput {
   update: [ChatUpdateWithWhereUniqueWithoutOwnerInput!]
   upsert: [ChatUpsertWithWhereUniqueWithoutOwnerInput!]
   deleteMany: [ChatScalarWhereInput!]
+  updateMany: [ChatUpdateManyWithWhereNestedInput!]
+}
+
+input ChatUpdateManyWithWhereNestedInput {
+  where: ChatScalarWhereInput!
+  data: ChatUpdateManyDataInput!
 }
 
 input ChatUpdateOneRequiredWithoutMessagesInput {
@@ -156,10 +192,12 @@ input ChatUpdateOneRequiredWithoutMessagesInput {
 }
 
 input ChatUpdateWithoutMessagesDataInput {
+  name: String
   owner: UserUpdateOneRequiredWithoutChatsInput
 }
 
 input ChatUpdateWithoutOwnerDataInput {
+  name: String
   messages: MessageUpdateManyWithoutChatInput
 }
 
@@ -194,6 +232,20 @@ input ChatWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
   owner: UserWhereInput
   messages_every: MessageWhereInput
   messages_some: MessageWhereInput
@@ -496,6 +548,7 @@ input MessageWhereUniqueInput {
 type Mutation {
   createChat(data: ChatCreateInput!): Chat!
   updateChat(data: ChatUpdateInput!, where: ChatWhereUniqueInput!): Chat
+  updateManyChats(data: ChatUpdateManyMutationInput!, where: ChatWhereInput): BatchPayload!
   upsertChat(where: ChatWhereUniqueInput!, create: ChatCreateInput!, update: ChatUpdateInput!): Chat!
   deleteChat(where: ChatWhereUniqueInput!): Chat
   deleteManyChats(where: ChatWhereInput): BatchPayload!

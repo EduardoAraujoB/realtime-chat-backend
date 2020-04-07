@@ -108,6 +108,10 @@ export interface Prisma {
     data: ChatUpdateInput;
     where: ChatWhereUniqueInput;
   }) => ChatPromise;
+  updateManyChats: (args: {
+    data: ChatUpdateManyMutationInput;
+    where?: ChatWhereInput;
+  }) => BatchPayloadPromise;
   upsertChat: (args: {
     where: ChatWhereUniqueInput;
     create: ChatCreateInput;
@@ -178,6 +182,8 @@ export interface ClientConstructor<T> {
 export type ChatOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -228,6 +234,20 @@ export interface ChatWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
   owner?: Maybe<UserWhereInput>;
   messages_every?: Maybe<MessageWhereInput>;
   messages_some?: Maybe<MessageWhereInput>;
@@ -400,6 +420,7 @@ export type UserWhereUniqueInput = AtLeastOne<{
 
 export interface ChatCreateInput {
   id?: Maybe<ID_Input>;
+  name: String;
   owner: UserCreateOneWithoutChatsInput;
   messages?: Maybe<MessageCreateManyWithoutChatInput>;
 }
@@ -437,6 +458,7 @@ export interface ChatCreateOneWithoutMessagesInput {
 
 export interface ChatCreateWithoutMessagesInput {
   id?: Maybe<ID_Input>;
+  name: String;
   owner: UserCreateOneWithoutChatsInput;
 }
 
@@ -473,10 +495,12 @@ export interface ChatCreateManyWithoutOwnerInput {
 
 export interface ChatCreateWithoutOwnerInput {
   id?: Maybe<ID_Input>;
+  name: String;
   messages?: Maybe<MessageCreateManyWithoutChatInput>;
 }
 
 export interface ChatUpdateInput {
+  name?: Maybe<String>;
   owner?: Maybe<UserUpdateOneRequiredWithoutChatsInput>;
   messages?: Maybe<MessageUpdateManyWithoutChatInput>;
 }
@@ -536,6 +560,7 @@ export interface ChatUpdateOneRequiredWithoutMessagesInput {
 }
 
 export interface ChatUpdateWithoutMessagesDataInput {
+  name?: Maybe<String>;
   owner?: Maybe<UserUpdateOneRequiredWithoutChatsInput>;
 }
 
@@ -676,6 +701,9 @@ export interface ChatUpdateManyWithoutOwnerInput {
     | ChatUpsertWithWhereUniqueWithoutOwnerInput
   >;
   deleteMany?: Maybe<ChatScalarWhereInput[] | ChatScalarWhereInput>;
+  updateMany?: Maybe<
+    ChatUpdateManyWithWhereNestedInput[] | ChatUpdateManyWithWhereNestedInput
+  >;
 }
 
 export interface ChatUpdateWithWhereUniqueWithoutOwnerInput {
@@ -684,6 +712,7 @@ export interface ChatUpdateWithWhereUniqueWithoutOwnerInput {
 }
 
 export interface ChatUpdateWithoutOwnerDataInput {
+  name?: Maybe<String>;
   messages?: Maybe<MessageUpdateManyWithoutChatInput>;
 }
 
@@ -708,6 +737,20 @@ export interface ChatScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -729,6 +772,15 @@ export interface ChatScalarWhereInput {
   NOT?: Maybe<ChatScalarWhereInput[] | ChatScalarWhereInput>;
 }
 
+export interface ChatUpdateManyWithWhereNestedInput {
+  where: ChatScalarWhereInput;
+  data: ChatUpdateManyDataInput;
+}
+
+export interface ChatUpdateManyDataInput {
+  name?: Maybe<String>;
+}
+
 export interface UserUpsertWithoutMessagesInput {
   update: UserUpdateWithoutMessagesDataInput;
   create: UserCreateWithoutMessagesInput;
@@ -738,6 +790,10 @@ export interface MessageUpsertWithWhereUniqueWithoutChatInput {
   where: MessageWhereUniqueInput;
   update: MessageUpdateWithoutChatDataInput;
   create: MessageCreateWithoutChatInput;
+}
+
+export interface ChatUpdateManyMutationInput {
+  name?: Maybe<String>;
 }
 
 export interface MessageCreateInput {
@@ -819,12 +875,14 @@ export interface NodeNode {
 
 export interface Chat {
   id: ID_Output;
+  name: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
 
 export interface ChatPromise extends Promise<Chat>, Fragmentable {
   id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
   owner: <T = UserPromise>() => T;
   messages: <T = FragmentableArray<Message>>(args?: {
     where?: MessageWhereInput;
@@ -843,6 +901,7 @@ export interface ChatSubscription
   extends Promise<AsyncIterator<Chat>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
   owner: <T = UserSubscription>() => T;
   messages: <T = Promise<AsyncIterator<MessageSubscription>>>(args?: {
     where?: MessageWhereInput;
@@ -861,6 +920,7 @@ export interface ChatNullablePromise
   extends Promise<Chat | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
   owner: <T = UserPromise>() => T;
   messages: <T = FragmentableArray<Message>>(args?: {
     where?: MessageWhereInput;
@@ -1235,6 +1295,7 @@ export interface ChatSubscriptionPayloadSubscription
 
 export interface ChatPreviousValues {
   id: ID_Output;
+  name: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -1243,6 +1304,7 @@ export interface ChatPreviousValuesPromise
   extends Promise<ChatPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -1251,6 +1313,7 @@ export interface ChatPreviousValuesSubscription
   extends Promise<AsyncIterator<ChatPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

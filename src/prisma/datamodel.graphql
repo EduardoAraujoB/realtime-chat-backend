@@ -11,6 +11,7 @@ type User {
 
 type Chat {
   id: ID! @id
+  name: String!
   owner: User! @relation(link: INLINE)
   messages: [Message!]!
   createdAt: DateTime! @createdAt
