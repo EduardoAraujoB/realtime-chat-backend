@@ -21,6 +21,8 @@ type Chat {
 type Query {
   users: [User]!
   user(id: String!): User
+  chats: [Chat]!
+  chat(id: String): Chat
 }
 
 type Mutation {
