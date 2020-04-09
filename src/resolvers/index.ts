@@ -3,6 +3,7 @@ import ChatQuerys from './queries/chat';
 
 import UserMutations from './mutations/user';
 import ChatMutations from './mutations/chat';
+import MessageMutations from './mutations/message';
 
 export default {
   Query: {
@@ -12,5 +13,6 @@ export default {
   Mutation: {
     ...UserMutations,
     ...ChatMutations,
+    ...MessageMutations,
   },
 };
