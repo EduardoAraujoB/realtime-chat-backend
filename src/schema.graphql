@@ -18,6 +18,15 @@ type Chat {
   updatedAt: DateTime!
 }
 
+type Message {
+  id: ID!
+  content: String!
+  author: User!
+  chat: Chat!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   users: [User]!
   user(id: String!): User
@@ -28,4 +37,5 @@ type Query {
 type Mutation {
   user(name: String!, email: String!, password: String!): User
   chat(userId: ID!, name: String!): Chat
+  message(authorId: ID!, chatId: ID!, content: String!): Message
 }
